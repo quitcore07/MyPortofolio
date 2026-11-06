@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ubay Abdillah | Design Engineer & Prompt Engineer</title>
+<meta name="description" content="Portofolio Ubay Abdillah, mahasiswa S1 Computer Science yang berfokus pada Design Engineering dan Prompt Engineering.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05090a; --panel:rgba(8,16,14,.82); --line:#14352a;
+    --green:#00ff9c; --green-dim:#0b9c66; --cyan:#22d3ee; --text:#d4f5e6; --muted:#7aa593; --warn:#ff4d6d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:15px;line-height:1.7;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--green);color:#00130c}
+
+  #matrix{position:fixed;inset:0;z-index:0;opacity:.28}
+  body::after{ /* scanlines */
+    content:"";position:fixed;inset:0;z-index:50;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 3px);
+  }
+  .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.75) 100%)}
+  .wrap{position:relative;z-index:2;max-width:1060px;margin:0 auto;padding:0 20px}
+
+  /* Nav */
+  header{position:sticky;top:0;z-index:20;background:rgba(5,9,10,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:700;color:var(--green)}
+  .logo b{color:var(--muted);font-weight:400}
+  nav ul{display:flex;gap:22px;list-style:none;font-size:.85rem;color:var(--muted)}
+  nav ul a:hover{color:var(--green);text-shadow:0 0 8px var(--green)}
+  nav ul a::before{content:"./";color:var(--green-dim)}
+
+  /* Hero */
+  .hero{min-height:calc(100vh - 60px);display:grid;grid-template-columns:1.4fr 1fr;gap:44px;align-items:center;padding:48px 0}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:var(--green);border:1px solid var(--line);background:var(--panel);padding:6px 12px;border-radius:4px;margin-bottom:22px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.6s infinite}
+  @keyframes pulse{50%{opacity:.3}}
+  .prompt-line{color:var(--muted);font-size:.9rem}
+  .prompt-line span{color:var(--green)}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.05;margin:8px 0 14px;color:#fff;position:relative;display:inline-block}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;overflow:hidden}
+  .glitch::before{color:var(--cyan);left:2px;animation:g1 3.2s infinite linear alternate-reverse;clip-path:inset(0 0 60% 0)}
+  .glitch::after{color:var(--warn);left:-2px;animation:g2 2.7s infinite linear alternate-reverse;clip-path:inset(60% 0 0 0)}
+  @keyframes g1{0%,88%{transform:translate(0)}90%{transform:translate(-3px,1px)}94%{transform:translate(3px,-1px)}100%{transform:translate(0)}}
+  @keyframes g2{0%,85%{transform:translate(0)}88%{transform:translate(3px,2px)}93%{transform:translate(-3px,-2px)}100%{transform:translate(0)}}
+  .role{font-size:1.15rem;color:var(--green);min-height:1.8em;margin-bottom:14px}
+  .caret{display:inline-block;width:.6ch;height:1.1em;background:var(--green);vertical-align:-.15em;margin-left:2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .lead{color:var(--muted);max-width:56ch;margin-bottom:26px}
+  .btns{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{padding:11px 20px;border:1px solid var(--green-dim);border-radius:4px;font-weight:500;font-size:.88rem;color:var(--green);background:transparent;transition:.2s}
+  .btn:hover{background:var(--green);color:#00130c;box-shadow:0 0 22px rgba(0,255,156,.5)}
+  .btn.solid{background:var(--green);color:#00130c}
+  .btn.solid:hover{filter:brightness(1.15)}
+
+  /* Photo with HUD */
+  .photo-wrap{position:relative;max-width:340px;justify-self:center;width:100%}
+  .photo{position:relative;aspect-ratio:4/5;background:#08140f;border:1px solid var(--line);overflow:hidden}
+  .photo .fb{position:absolute;inset:0;display:grid;place-items:center;font-family:'Space Grotesk';font-size:4.5rem;font-weight:700;color:var(--green);text-shadow:0 0 24px var(--green)}
+  .photo img{position:relative;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.05)}
+  .photo::after{content:"";position:absolute;left:0;right:0;height:3px;background:linear-gradient(transparent,var(--green),transparent);box-shadow:0 0 18px var(--green);animation:scan 3.4s linear infinite;opacity:.8}
+  @keyframes scan{0%{top:-4%}100%{top:104%}}
+  .corner{position:absolute;width:22px;height:22px;border:2px solid var(--green);z-index:3}
+  .c1{top:-6px;left:-6px;border-right:0;border-bottom:0}.c2{top:-6px;right:-6px;border-left:0;border-bottom:0}
+  .c3{bottom:-6px;left:-6px;border-right:0;border-top:0}.c4{bottom:-6px;right:-6px;border-left:0;border-top:0}
+  .hud{margin-top:12px;font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between}
+  .hud b{color:var(--green);font-weight:500}
+
+  /* Sections */
+  section{padding:76px 0}
+  .title{display:flex;align-items:center;gap:12px;margin-bottom:34px;font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,3.4vw,2.1rem);color:#fff}
+  .title small{font-family:'JetBrains Mono';font-size:.85rem;color:var(--green)}
+  .title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  /* Terminal window */
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 0 40px rgba(0,255,156,.06)}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:.75rem;color:var(--muted)}
+  .term-bar i{width:11px;height:11px;border-radius:50%;display:block}
+  .term-bar i:nth-child(1){background:#ff5f56}.term-bar i:nth-child(2){background:#ffbd2e}.term-bar i:nth-child(3){background:#27c93f}
+  .term-bar span{margin-left:8px}
+  .term-body{padding:20px;font-size:.88rem}
+  .term-body .c{color:var(--green)}.term-body .k{color:var(--cyan)}.term-body .m{color:var(--muted)}
+  .term-body p{margin-bottom:6px;white-space:pre-wrap;word-break:break-word}
+
+  .about{display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+  .about .text p{color:var(--muted);margin-bottom:14px}
+  .about .text strong{color:var(--green);font-weight:500}
+
+  /* Skills */
+  .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+  .skill-group h3{font-size:.95rem;color:var(--green);margin-bottom:16px;font-weight:500}
+  .skill-group h3::before{content:"> ";color:var(--green-dim)}
+  .bar{margin-bottom:14px}
+  .bar-top{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:5px;color:var(--text)}
+  .bar-top span:last-child{color:var(--muted)}
+  .track{height:6px;background:#0c1d17;border-radius:3px;overflow:hidden}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--green-dim),var(--green));box-shadow:0 0 10px var(--green);border-radius:3px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{font-size:.74rem;padding:3px 10px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+
+  /* Prompt demo */
+  .demo{margin-top:26px}
+
+  /* Projects */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;transition:.25s;overflow:hidden}
+  .card::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(0,255,156,.12),transparent 45%);opacity:0;transition:.3s}
+  .card:hover{border-color:var(--green-dim);transform:translateY(-4px);box-shadow:0 0 30px rgba(0,255,156,.15)}
+  .card:hover::before{opacity:1}
+  .card > *{position:relative}
+  .thumb{height:140px;border:1px dashed var(--line);border-radius:4px;display:grid;place-items:center;color:var(--muted);font-size:.78rem;margin-bottom:16px;background:repeating-linear-gradient(45deg,#08140f,#08140f 10px,#0a1914 10px,#0a1914 20px)}
+  .meta{font-size:.72rem;color:var(--cyan);margin-bottom:4px}
+  .card h3{font-family:'Space Grotesk';font-size:1.15rem;color:#fff;margin-bottom:8px}
+  .card p{font-size:.85rem;color:var(--muted)}
+  .card .go{display:inline-block;margin-top:14px;font-size:.82rem;color:var(--green)}
+  .card .go:hover{text-shadow:0 0 8px var(--green)}
+
+  /* Contact */
+  .contact-list p{margin-bottom:10px}
+  .contact-list a{color:var(--cyan);border-bottom:1px dashed var(--cyan)}
+  .contact-list a:hover{color:var(--green);border-color:var(--green)}
+
+  footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted);font-size:.78rem}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:780px){
+    nav ul{gap:12px;font-size:.75rem}
+    nav ul a::before{content:""}
+    .hero{grid-template-columns:1fr;padding-top:32px;gap:32px}
+    .photo-wrap{order:-1;max-width:260px}
+    .about{grid-template-columns:1fr}
+    section{padding:56px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    #matrix{display:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="matrix" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo">ubay<b>@</b>portfolio<b>:~$</b></a>
+      <ul>
+        <li><a href="#tentang">tentang</a></li>
+        <li><a href="#keahlian">keahlian</a></li>
+        <li><a href="#proyek">proyek</a></li>
+        <li><a href="#kontak">kontak</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="badge"><span class="dot"></span> status: terbuka untuk magang &amp; proyek</div>
+        <div class="prompt-line"><span>root@ubay</span>:~$ whoami</div>
+        <h1 class="glitch" data-text="Ubay Abdillah">Ubay Abdillah</h1>
+        <div class="role"><span id="typed"></span><span class="caret"></span></div>
+        <p class="lead">Mahasiswa S1 Computer Science yang menjembatani desain dan kode. Saya membangun antarmuka yang rapi dan merancang prompt agar AI bekerja akurat serta bisa diandalkan.</p>
+        <div class="btns">
+          <a class="btn solid" href="#proyek">&gt; lihat_proyek</a>
+          <a class="btn" href="#kontak">&gt; hubungi_saya</a>
+        </div>
+      </div>
+
+      <!-- Ganti foto.jpg dengan foto profesionalmu -->
+      <div class="photo-wrap">
+        <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+        <div class="photo">
+          <div class="fb">UA</div>
+          <img src="ubay formal.jpeg" alt="Foto Ubay Abdillah" onerror="this.style.display='none'">
+        </div>
+        <div class="hud"><span>ID: <b>UBAY-001</b></span><span>ACCESS: <b>GRANTED</b></span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="tentang">
+    <div class="wrap reveal">
+      <div class="title"><small>01</small> Tentang</div>
+      <div class="about">
+        <div class="text">
+          <p>Saya mahasiswa <strong>Computer Science</strong> yang tertarik pada pertemuan antara antarmuka yang nyaman digunakan dan teknologi di baliknya. Saya suka mengubah ide menjadi tampilan yang berfungsi nyata, dari prototipe sampai kode yang berjalan di browser.</p>
+          <p>Di sisi lain, saya mendalami <strong>prompt engineering</strong>: menyusun instruksi, konteks, dan contoh supaya model AI menghasilkan jawaban yang konsisten, terukur, dan siap dipakai dalam alur kerja nyata.</p>
+        </div>
+        <div class="term">
+          <div class="term-bar"><i></i><i></i><i></i><span>profile.json</span></div>
+          <div class="term-body">
+<p><span class="m">{</span></p>
+<p>  <span class="k">"nama"</span>: <span class="c">"Ubay Abdillah"</span>,</p>
+<p>  <span class="k">"pendidikan"</span>: <span class="c">"S1 Computer Science"</span>,</p>
+<p>  <span class="k">"fokus"</span>: [<span class="c">"Design Engineering"</span>,</p>
+<p>            <span class="c">"Prompt Engineering"</span>],</p>
+<p>  <span class="k">"lokasi"</span>: <span class="c">"Indonesia"</span>,</p>
+<p>  <span class="k">"open_to_work"</span>: <span class="c">true</span></p>
+<p><span class="m">}</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keahlian">
+    <div class="wrap reveal">
+      <div class="title"><small>02</small> Keahlian</div>
+      <div class="skills">
+        <div class="skill-group">
+          <h3>design_engineering</h3>
+          <div class="bar"><div class="bar-top"><span>HTML &amp; CSS</span><span>85%</span></div><div class="track"><div class="fill" data-w="85"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>JavaScript</span><span>70%</span></div><div class="track"><div class="fill" data-w="70"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>UI/UX &amp; Figma</span><span>75%</span></div><div class="track"><div class="fill" data-w="75"></div></div></div>
+          <div class="chips"><span class="chip">Responsive UI</span><span class="chip">Animasi</span><span class="chip">Design System</span></div>
+        </div>
+        <div class="skill-group">
+          <h3>prompt_engineering</h3>
+          <div class="bar"><div class="bar-top"><span>Prompt Design</span><span>85%</span></div><div class="track"><div class="fill" data-w="85"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Few-shot &amp; Chain-of-thought</span><span>75%</span></div><div class="track"><div class="fill" data-w="75"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Evaluasi Output</span><span>70%</span></div><div class="track"><div class="fill" data-w="70"></div></div></div>
+          <div class="chips"><span class="chip">LLM Workflow</span><span class="chip">System Prompt</span><span class="chip">Structured Output</span></div>
+        </div>
+        <div class="skill-group">
+          <h3>computer_science</h3>
+          <div class="bar"><div class="bar-top"><span>Algoritma &amp; Struktur Data</span><span>70%</span></div><div class="track"><div class="fill" data-w="70"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Python</span><span>65%</span></div><div class="track"><div class="fill" data-w="65"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Git &amp; GitHub</span><span>70%</span></div><div class="track"><div class="fill" data-w="70"></div></div></div>
+          <div class="chips"><span class="chip">Problem Solving</span><span class="chip">Linux CLI</span></div>
+        </div>
+      </div>
+
+     
+    </div>
+  </section>
+
+  <section id="proyek">
+    <div class="wrap reveal">
+      <div class="title"><small>03</small> Proyek</div>
+      <!-- Ganti isi tiap kartu dengan proyek aslimu. Tambah/hapus kartu sesuai kebutuhan. -->
+      <div class="cards">
+        <article class="card">
+          <div class="thumb">[ screenshot_two_wheels ]</div>
+          <div class="meta">// design_engineering</div>
+          <h3>Two Wheels: Aplikasi Sewa Motor Wisatawan</h3>
+          <p>Prototipe interaktif 21 layar untuk menyewa motor, mencakup verifikasi identitas, pemesanan dengan kalkulasi harga otomatis, pembayaran multi-metode, dan QR pengambilan kendaraan. Mendukung dua bahasa (ID/EN). Dikerjakan bersama tim; peran saya: [isi peranmu].</p>
+          <a class="go" href="two-wheels.html" target="_blank">$ buka --prototipe →</a>
+        </article>
+        <article class="card">
+          <div class="thumb">[ gambar_proyek_2 ]</div>
+          <div class="meta">// prompt_engineering</div>
+          <h3>Nama Proyek Dua</h3>
+          <p>Ceritakan tugas yang diselesaikan dengan prompt, cara kamu mengujinya, dan peningkatan kualitas yang didapat.</p>
+          <a class="go" href="#">$ buka --detail →</a>
+        </article>
+        <article class="card">
+          <div class="thumb">[ gambar_proyek_3 ]</div>
+          <div class="meta">// computer_science</div>
+          <h3>Nama Proyek Tiga</h3>
+          <p>Proyek kuliah atau pribadi yang menunjukkan kemampuan teknismu, lengkap dengan teknologi yang dipakai.</p>
+          <a class="go" href="#">$ buka --detail →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak">
+    <div class="wrap reveal">
+      <div class="title"><small>04</small> Kontak</div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span>contact.sh</span></div>
+        <div class="term-body contact-list">
+          <p><span class="c">$</span> echo "Mari berkolaborasi!"</p>
+          <p class="m">Punya peluang magang, proyek, atau ingin berdiskusi soal desain dan AI? Silakan hubungi saya.</p>
+          <p><span class="c">$</span> email    → <a href="mailto:ubayabdillah1107@gmail.com">ubayabdillah1107@gmail.com</a></p>
+          <p><span class="c">$</span> linkedin → <a href="https://www.linkedin.com/in/ubay-abdillah" target="_blank" rel="noopener">linkedin.com/in/ubay-abdillah</a></p>
+          <p><span class="c">$</span> github   → <a href="https://github.com/quitcore07" target="_blank" rel="noopener">github.com/quitcore07</a></p>
+          <p><span class="c">$</span> instagram   → <a href="https://www.instagram.com/quietcore___" target="_blank" rel="noopener">instagram.com/quietcore___</a></p>
+          <p><span class="c">$</span> unduh   → <a href="cv.pdf" download>cv.pdf</a></p>
+          <p><span class="c">$</span> <span class="caret"></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> Ubay Abdillah · dibuat dengan HTML, CSS &amp; JavaScript</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---- Matrix rain ---- */
+  var canvas = document.getElementById('matrix'), ctx = canvas.getContext('2d');
+  var chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01{}<>/$#=+;ABCDEF'.split('');
+  var size = 16, cols, drops;
+  function resize(){
+    canvas.width = innerWidth; canvas.height = innerHeight;
+    cols = Math.floor(canvas.width / size);
+    drops = Array.from({length: cols}, function(){ return Math.random() * -50; });
+  }
+  resize(); addEventListener('resize', resize);
+  function rain(){
+    ctx.fillStyle = 'rgba(5,9,10,0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = size + 'px JetBrains Mono, monospace';
+    for (var i = 0; i < cols; i++){
+      var ch = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillStyle = Math.random() > 0.97 ? '#e8fff5' : '#00ff9c';
+      ctx.fillText(ch, i * size, drops[i] * size);
+      if (drops[i] * size > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  if (!reduce) setInterval(rain, 55);
+
+  /* ---- Typewriter role ---- */
+  var roles = ['Design Engineer', 'Prompt Engineer', 'Mahasiswa Computer Science'];
+  var typed = document.getElementById('typed'), ri = 0, ci = 0, del = false;
+  function type(){
+    var word = roles[ri];
+    if (reduce){ typed.textContent = roles.join(' | '); return; }
+    typed.textContent = word.slice(0, ci);
+    if (!del && ci < word.length){ ci++; setTimeout(type, 85); }
+    else if (!del){ del = true; setTimeout(type, 1400); }
+    else if (ci > 0){ ci--; setTimeout(type, 45); }
+    else { del = false; ri = (ri + 1) % roles.length; setTimeout(type, 300); }
+  }
+  type();
+
+  /* ---- Scroll reveal + skill bars ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.fill').forEach(function(f){ f.style.width = f.dataset.w + '%'; });
+      io.unobserve(e.target);
+    });
+  }, {threshold: 0.15});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- Card glow follows cursor ---- */
+  document.querySelectorAll('.card').forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+</script>
+</body>
+</html>
