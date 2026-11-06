@@ -1,0 +1,214 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Cari Ruang</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#073449;--navy:#0E1A2B;--y:#FFD300;--iv:#F5F3EE;--br:#C9A56A;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}html,body{height:100%;margin:0}
+body{background:var(--bg);color:#fff;font:500 16px/1.4 'Plus Jakarta Sans',system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+header{display:flex;align-items:center;gap:8px;padding:8px 14px}.bd{border:0;font-weight:800;font-size:18px;padding:0 4px}header span{flex:1;text-align:right}
+header button{min-width:44px;padding:0 8px}
+#m{flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+button{font:inherit;min-height:44px;min-width:44px;border-radius:12px;border:1.5px solid #ffffff66;background:transparent;color:#fff;padding:0 14px;cursor:pointer}
+button.y,button.on,button[aria-pressed=true]{background:var(--y);color:var(--navy);border-color:var(--y);font-weight:700}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+input,select{min-height:48px;border-radius:12px;border:0;padding:0 14px;font:inherit;background:var(--iv);color:var(--navy);width:100%;box-sizing:border-box}
+.mn{font:500 12px 'IBM Plex Mono',monospace;color:var(--br);margin:0}
+.sr{position:absolute;left:-9999px}
+.home{padding:8px 16px 24px;display:flex;flex-direction:column;gap:12px}.home h1{font-size:30px;margin:4px 0 0;font-weight:800}
+.roles,.sb,.chips,.tg,.nv{display:flex;gap:8px}.roles button,.nv button{flex:1}.chips,.tg{flex-wrap:wrap}.sb input{flex:1}
+.ls{display:flex;flex-direction:column;gap:6px;max-height:42vh;overflow:auto}.ls p{margin:4px 0}
+.ls button{display:flex;align-items:center;gap:8px;text-align:left;background:var(--iv);color:var(--navy);border:0;padding:8px 12px}
+.ls small{margin-left:auto;color:#3D4650}.ls em{background:var(--navy);color:var(--y);font:500 11px 'IBM Plex Mono',monospace;padding:2px 6px;border-radius:6px}
+.mw{flex:1;min-height:200px;position:relative;margin:0 10px}#sv{width:100%;height:100%;touch-action:none;display:block}
+.zb{position:absolute;right:6px;bottom:6px;display:flex;flex-direction:column;gap:6px}.zb button{background:var(--navy);padding:0}
+.sh{background:var(--navy);border-radius:20px 20px 0 0;padding:14px 16px 18px;max-height:42vh;overflow:auto}
+.hd{display:flex;gap:14px;align-items:center;margin:8px 0 14px}.hd svg{flex:none;background:#1C1F22;border-radius:50%;padding:14px}
+h2{font-size:20px;line-height:1.25;margin:0;font-weight:700}.nv button{min-height:52px}.w{width:100%;min-height:52px}.tg{margin-top:12px}
+summary{min-height:44px;display:flex;align-items:center;cursor:pointer;margin-top:8px}
+details ol{padding:0;list-style:none;margin:0}details li button{width:100%;text-align:left;margin-bottom:6px;border:0;background:#ffffff18;padding:8px 12px}
+li button[aria-current]{background:var(--y);color:var(--navy)}
+.md{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;z-index:9}.mc{background:var(--navy);width:100%;padding:16px;border-radius:20px 20px 0 0;max-height:80vh;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.rs{position:relative;z-index:5;margin:0 10px 8px}#sg3{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:var(--navy);border-radius:12px;padding:6px}#sg3:empty{display:none}
+.lb text{text-anchor:middle;dominant-baseline:central;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}.lb text.mn{font-family:'IBM Plex Mono',monospace;font-weight:500}
+.t rect,circle.t{animation:gl 1.4s ease-in-out infinite}@keyframes gl{0%,100%{filter:drop-shadow(0 0 2px #FFD300)}50%{filter:drop-shadow(0 0 12px #FFD300)}}
+.rd{stroke-dasharray:9 7;animation:dh 1s linear infinite}@keyframes dh{to{stroke-dashoffset:-16}}
+.pr{transform-box:fill-box;transform-origin:center;animation:pr 1.6s ease-out infinite}@keyframes pr{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+</style></head><body>
+<header><button class="bd" data-a="home">Cari Ruang</button><span class="mn" id="fl"></span><button data-a="lang" data-v="id" data-lg="id">ID</button><button data-a="lang" data-v="en" data-lg="en">EN</button></header>
+<main id="m"></main><div id="live" class="sr" aria-live="polite"></div>
+<!-- DATA: edit di sini. Koordinat per lantai (px denah). Ruang door "" = hanya digambar, tidak pernah dipakai di rute (Lift Barang, T. Darurat, dll). -->
+<script type="application/json" id="d">
+{"floors":{"g":{"n":"Lantai Ground","b":[34,140,768,785],"m":0.045,"fs":10,"lbl":[["AREA MASUK",362,811],["KORIDOR",314,500,1]]},
+"l":{"n":"Lantai Lobby","b":[27,104,746,567],"m":0.08,"fs":10,"lbl":[["AREA LOBBY",250,400]]},
+"t":{"n":"Lantai Tipikal","b":[27,104,746,540],"m":0.08,"fs":11,"lbl":[["KORIDOR",216,430,1],["KORIDOR",583,430,1]]}},
+"start":{"ground-masuk":{"n":"Lantai Ground · Pintu masuk utama","node":"g_masuk","h":[0,-1]},"lift-ground":{"n":"Lantai Ground · Lift","node":"g_lift","h":[0,-1]},"lift-lobby":{"n":"Lantai Lobby · Lift","node":"l_lift","h":[-1,0]},"lift-tipikal":{"n":"Lantai Tipikal · Lift","node":"t_lift","h":[-1,0]}},
+"en":{"Lantai Ground":"Ground Floor","Lantai Lobby":"Lobby Floor","Lantai Tipikal":"Typical Floor","Pintu masuk utama":"Main entrance","area masuk":"entrance area","mulut koridor":"start of the corridor","area lift":"lift area","ujung koridor":"end of the corridor","sudut koridor kiri atas":"top-left corner","sudut koridor kanan atas":"top-right corner","sudut koridor kiri bawah":"bottom-left corner","sudut koridor kanan bawah":"bottom-right corner","Pintu":"Door","Pintu ujung koridor":"Door at the end of the corridor","Tangga ke Basement Parkir":"Stairs to Basement Parking","Pos Satpam":"Security Post","Eskalator ke Lobby (naik)":"Escalator to Lobby (up)","Eskalator ke Lobby (turun)":"Escalator to Lobby (down)","Eskalator menuju ground floor":"Escalator to Ground Floor","Pintu masuk":"Entrance door","Pintu ke parkiran":"Door to parking","Perpustakaan":"Library","Tempat Duduk":"Seating Area","Toilet Cowo":"Men’s Toilet","Toilet Cewe":"Women’s Toilet","WC Pria":"Men’s Toilet","WC Wanita":"Women’s Toilet","T. Darurat":"Emergency Stairs","Tangga":"Stairs","Lift Barang":"Freight Lift","Area belum berlabel":"Unlabeled area","baris atas":"top row","baris bawah":"bottom row","sisi kiri":"left side","sisi kanan":"right side","AREA MASUK":"ENTRANCE AREA","AREA LOBBY":"LOBBY AREA","KORIDOR":"CORRIDOR"},"lifts":["g_lift","l_lift","t_lift"],"esc":[["g_esc","l_esc"]],
+"liftsG":[124,408,275,61.5,5,97,45],
+"alias":{"Academic Office":"akademik,tata usaha","Business Office":"bisnis,keuangan"},
+"tip":{"T":["R. Weekuri","R. Limboto","R. Lindu","R. Sentarum","R. Paniai","R. Ayamaru","R. Tondano"],"B":["R. Toba","R. Sentani","Academic Office","R. Towuti","R. Ranau","R. Singkarak","Business Office"],"L":["R. Habema","R. Kaco","R. Weekuri"],"R":["R. Kelimutu","R. Batur","R. Poso"]},
+"nodes":{"g_masuk":["g",327,875,"Pintu masuk utama"],"g_mid":["g",327,755,"area masuk"],"g_mouth":["g",314,590,"mulut koridor"],"g_lift":["g",314,420,"area lift",[0,-1]],"g_end":["g",314,190,"ujung koridor"],"g_esc":["g",535,755,"",[-1,0]],"g_satpam":["g",235,755],"g_tangga":["g",225,590],"g_kopi":["g",690,879],
+"l_chem":["l",95,168],"l_int":["l",190,168],"l_comp":["l",280,168],"l_eng":["l",372,168],"l_stu":["l",468,168],"l_off":["l",515,170],"l_s0":["l",190,270],"l_t1":["l",313,270],"l_n":["l",445,270,"Pintu"],"l_t2":["l",515,270],"l_lift":["l",445,420,"area lift",[-1,0]],"l_s2":["l",190,330],"l_perp":["l",146,330],"l_s3":["l",190,490],"l_adm":["l",120,490],"l_s4":["l",190,565],"l_front":["l",120,565],"l_s5":["l",190,642],"l_seat":["l",120,642],"l_h":["l",445,565],"l_d":["l",296,565,"Pintu"],"l_esc":["l",515,565,"",[-1,0]],"l_park":["l",445,632],
+"t_tl":["t",216,189,"sudut koridor kiri atas"],"t_tr":["t",583,189,"sudut koridor kanan atas"],"t_bl":["t",216,558,"sudut koridor kiri bawah"],"t_br":["t",583,558,"sudut koridor kanan bawah"],"t_wcp":["t",485,189],"t_wcw":["t",216,287],"t_lift":["t",400,380,"Lift",[1,0]]},
+"edges":[["k",["g_masuk","g_mid","g_mouth","g_lift","g_end"]],["k",["g_masuk","g_kopi"]],["k",["g_mid","g_esc"]],["k",["g_mid","g_satpam"]],["tangga",["g_mouth","g_tangga"]],
+["k",["l_chem","l_int","l_comp","l_eng","l_stu","l_off"]],["k",["l_int","l_s0","l_t1","l_n","l_t2"]],["k",["l_s0","l_s2","l_s3","l_s4","l_s5"]],["k",["l_s2","l_perp"]],["k",["l_s3","l_adm"]],["k",["l_s4","l_front"]],["k",["l_s5","l_seat"]],["k",["l_n","l_lift","l_h"]],["k",["l_h","l_esc"]],["k",["l_h","l_park"]],["k",["l_h","l_d","l_s4"]],
+["k",["tT0","tT1","t_tl","tT2","tT3","t_wcp","tT4","t_tr","tT5","tT6"]],["k",["tB0","tB1","t_bl","tB2","tB3","tB4","t_br","tB5","tB6"]],["k",["t_tl","tL0","t_wcw","tL1","tL2","t_bl"]],["k",["t_tr","tR0","tR1","tR2","t_br"]],["k",["tT3","t_lift","tB3"]]],
+"rooms":[["g_ujung","Pintu ujung koridor","g","a",[252,157,124,27],"g_end"],["g_lift","Lift","g","a",null,"g_lift","elevator"],["g_tgg","Tangga ke Basement Parkir","g","a",[98,571,122,39],"g_tangga","parkiran,parking,basement"],
+["g_u1","Area belum berlabel","g","u",[51,630,170,49]],["g_u2","Area belum berlabel","g","u",[408,571,96,39]],["g_u3","Area belum berlabel","g","u",[418,633,181,60]],
+["g_sat","Pos Satpam","g","a",[62,708,163,25],"g_satpam","security,keamanan"],["g_es1","Eskalator ke Lobby (naik)","g","a",[542,733,151,43],"g_esc","eskalator,escalator"],["g_es2","Eskalator ke Lobby (turun)","g","a",[542,785,151,43]],
+["g_kopi","Kawi-Kawi","g","f",[697,839,99,64],"g_kopi","kopi,coffee,kedai kopi,cafe"],["g_p1","Pintu masuk","g","a",[155,900,80,20]],["g_p2","Pintu masuk","g","a",[287,900,80,20]],["g_p3","Pintu masuk","g","a",[418,900,80,20]],
+["l_chem","Chemistry Lab","l","r",[51,120,88,42],"l_chem","kimia"],["l_int","Integrated Lab","l","r",[149,120,81,42],"l_int"],["l_comp","Computer Lab","l","r",[241,120,77,42],"l_comp","komputer"],["l_eng","Engineering Lab","l","r",[331,120,83,42],"l_eng","teknik"],["l_stu","Student Room","l","r",[428,120,81,42],"l_stu"],["l_off","Office","l","r",[521,120,50,101],"l_off","kantor"],
+["l_lib","Perpustakaan","l","r",[50,174,89,287],"l_perp","library,buku"],["l_adm","Admission Office","l","r",[51,474,62,32],"l_adm","pendaftaran,penerimaan"],["l_fd","Front Desk","l","r",[51,517,62,96],"l_front","resepsionis,reception"],["l_seat","Tempat Duduk","l","r",[51,623,62,38],"l_seat","seating"],
+["l_tc","Toilet Cowo","l","f",[274,277,78,43],"l_t1","toilet,wc,restroom,pria"],["l_tw","Toilet Cewe","l","f",[523,272,69,40],"l_t2","toilet,wc,restroom,wanita"],["l_pa","Pintu","l","a",[363,235,158,28]],["l_lf1","Lift","l","a",[363,320,25,187],"l_lift","elevator"],["l_lf2","Lift","l","a",[502,320,25,187]],["l_pv","Pintu","l","a",[284,473,24,188]],
+["l_es","Eskalator menuju ground floor","l","a",[523,548,229,56],"l_esc","eskalator,escalator"],["l_pk","Pintu ke parkiran","l","a",[361,643,253,20],"l_park","parkiran,parking"],
+["t_dr1","T. Darurat","t","d",[235,194,156,56]],["t_dr2","T. Darurat","t","d",[408,498,157,56]],["t_wcp","WC Pria","t","f",[408,194,157,66],"t_wcp","toilet,wc,restroom,pria,cowo"],["t_wcw","WC Wanita","t","f",[235,255,75,64],"t_wcw","toilet,wc,restroom,wanita,cewe"],
+["t_tg","Tangga","t","a",[408,266,75,226]],["t_lf","Lift","t","a",[316,255,76,237],"t_lift","elevator"],["t_u1","Area belum berlabel","t","u",[235,325,75,167]],["t_u2","Area belum berlabel","t","u",[489,266,75,226]],["t_lb","Lift Barang","t","a",[235,498,156,56]]]}
+</script>
+
+<script>
+const $=i=>document.getElementById(i),D=JSON.parse($('d').textContent),N={...D.nodes},RM=[],RD={};
+const norm=s=>s.toLowerCase().replace(/^((r\.?|ruang|kelas)\s+|r\.)+/,'').replace(/[^a-z0-9 ]/g,'').trim();
+const add=(id,n,f,tp,r,d,al,ket)=>{const k=[norm(n)];(al||'').split(',').forEach(a=>a&&k.push(norm(a)));if(/^R\. /.test(n))k.push('kelas','ruang','classroom');RM.push({id,n,f,tp,r,d,k,ket:ket||''})};
+D.rooms.forEach(a=>add(...a));
+{const[l,r,y,dy,c,w,h]=D.liftsG;for(let i=0;i<c;i++)[l,r].forEach((x,j)=>add('gl'+i+j,'Lift','g','a',[x,y+i*dy,w,h]));
+const T=D.tip,al=D.alias,row=(nm,p,ket,pos)=>nm.forEach((n,i)=>{const q=pos(i);add(p+'r'+i,n,'t','r',q.slice(0,4),p+i,al[n],ket);N[p+i]=['t',q[4],q[5]]});
+row(T.T,'tT','baris atas',i=>[43+102.7*i,120,97,64,91.5+102.7*i,189]);row(T.B,'tB','baris bawah',i=>[43+102.7*i,563,97,64,91.5+102.7*i,558]);
+row(T.L,'tL','sisi kiri',i=>[43,194+121*i,154,116,216,252+121*i]);row(T.R,'tR','sisi kanan',i=>[602,194+121*i,154,116,583,252+121*i])}
+RM.forEach(r=>{if(r.d&&!RD[r.d])RD[r.d]=r.n});
+const T={here:['Anda di sini','You are here'],room:['Ketik nama ruang, mis. Sentani','Type a room name, e.g. Sentani'],go:['Cari','Search'],mhs:['Mahasiswa','Student'],dsn:['Dosen','Lecturer'],tmu:['Tamu','Guest'],face:['Berdirilah menghadap QR atau lift ini','Stand facing this QR or lift'],facew:['Anda di depan','You are in front of'],start:['Mulai manual (tekan Berikutnya)','Start manually (tap Next)'],prev:['Sebelumnya','Back'],next:['Berikutnya','Next'],left:['kiri','left'],right:['kanan','right'],turn:['Belok','Turn'],at:['di','at'],str:['Jalan lurus','Walk straight'],until:['sampai','to'],door:['pintu','the door of'],liftU:['Naik lift ke','Take the lift up to'],liftD:['Turun lift ke','Take the lift down to'],escU:['Naik eskalator ke','Take the escalator up to'],escD:['Turun eskalator ke','Take the escalator down to'],sl:['ada di sisi kiri Anda','is on your left'],sr:['ada di sisi kanan Anda','is on your right'],ahead:['ada di depan Anda','is straight ahead'],arr:['Anda sudah sampai di','You have arrived at'],again:['Cari ruang lain','Find another room'],wrong:['Posisi saya','My position'],all:['Lihat semua langkah','See all steps'],noesc:['Lift saja (tanpa eskalator)','Lift only (no escalators)'],rot:['Putar peta sesuai arah hadap','Rotate map to where I face'],viaE:['Via eskalator','Via escalator'],viaL:['Via lift','Via lift'],nf:['Ruang tidak ditemukan. Mungkin maksud Anda:','Room not found. Did you mean:'],near:['paling dekat','nearest'],fix:['Ketik ruang di dekat Anda, mis. Lindu','Type a room near you, e.g. Lindu'],none:['Rute tidak ditemukan dengan pengaturan ini. Matikan "Lift saja" atau pilih ruang lain.','No route with these settings. Turn off "Lift only" or pick another room.'],close:['Tutup','Close'],map:['Denah','Floor plan'],sub:['Temukan ruangan di dalam gedung, langkah demi langkah.','Find rooms inside the building, step by step.'],who:['Saya seorang…','I am a…'],hint:['Terisi otomatis saat Anda memindai QR di gedung.','Filled in automatically when you scan the QR in the building.'],quick:['Pintasan cepat','Quick shortcuts'],empty:['Ketik nama ruang dulu, misalnya Sentani.','Type a room name first, e.g. Sentani.'],nf0:['Ruang tidak ditemukan. Coba nama lain, misalnya Sentani atau Academic Office.','Room not found. Try another name, e.g. Sentani or Academic Office.'],to:['Menuju','To'],fixh:['Hadapkan badan ke pintunya.','Face its door.'],again2:['Cari ruang lain, mis. Tondano','Find another room, e.g. Tondano'],wrongq:['Anda sedang berada di depan ruang apa?','Which room are you standing in front of?'],live:['Langsung','Live'],tr:['putar ke kanan','turn right'],tl:['putar ke kiri','turn left'],back:['putar balik','turn around'],nocomp:['kompas belum terbaca','compass not detected'],nosens:['sensor gerak tidak terbaca, pakai tombol Tes','motion sensor not detected, use the Test button'],tap:['tekan Berikutnya setelah tiba di lantai itu','tap Next once you arrive on that floor'],rem:['sisa','left'],livebtn:['Mulai langsung (kompas & langkah)','Start live (compass & steps)'],livehint:['Berdiri menghadap QR atau lift, lalu tekan. Peta akan mengikuti arah hadap dan langkah Anda.','Face the QR or lift, then tap. The map follows where you face and walk.'],live2:['Mode langsung','Live mode'],cal:['Kalibrasi: hadap searah jalur','Calibrate: face along the path'],vo:['Suara','Voice'],tst:['Tes: +1 langkah','Test: +1 step'],uturn:['Putar balik','Turn around'],exit:['Setelah keluar','After you exit']};
+const CH={mhs:[['kelas','Ruang kelas','Classrooms'],['Perpustakaan','Perpustakaan','Library'],['Toilet']],dsn:[['Academic Office'],['Business Office'],['kelas','Ruang kelas','Classrooms']],tmu:[['Front Desk'],['Admission Office'],['Perpustakaan','Perpustakaan','Library'],['Toilet']]};
+const IC={up:'M12 20V5M6 11l6-6 6 6',left:'M17 20v-7a4 4 0 0 0-4-4H6M10 5L6 9l4 4',right:'M7 20v-7a4 4 0 0 1 4-4h7M14 5l4 4-4 4',lift:'M5 3h14v18H5zM9 10l3-3 3 3M9 14l3 3 3-3',lift2:'',esc:'M3 19h5v-5h5V9h5V4h3',back:'M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-4',ok:'M5 12l5 5L20 7',pin:'M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z'};
+const C={r:['#0E1A2B','#fff'],f:['#C9A56A','#0E1A2B'],a:['#1C1F22','#fff'],d:['#006B35','#fff'],u:['#F5F3EE','#555A5F']},O={g:0,l:1,t:2};
+let S={lang:'id',role:'mhs',scr:'home',i:0,ne:0,opt:'auto',rot:0,wrong:0},V={cx:0,cy:0,z:1,k:1},ROT=0,RT=null,LV={on:0,sm:null,off:0,d:0,up:0,t:0,f:null,vt:0},SE={o:0,m:0};
+const t=k=>T[k][S.lang=='en'?1:0],FN=f=>E(D.floors[f].n),E=s=>S.lang=='en'?s.split(' · ').map(x=>D.en[x]||x).join(' · '):s,m=$('m');
+const setStart=k=>{const s=D.start[k];S.start=k;S.cur={n:s.node,h:s.h,label:s.n}};
+const pk=id=>E(N[id][3]||RD[id]||'');
+const ic=k=>`<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
+const fl=()=>{const s=RT&&RT.st[S.i-1];return S.i==0||!RT?N[S.cur.n][0]:s?s.fl:S.dest.f};
+// ---- graf & rute
+function graph(no){const G={},ad=(a,b,c,ty)=>{(G[a]=G[a]||[]).push([b,c,ty]);(G[b]=G[b]||[]).push([a,c,ty])};
+D.edges.forEach(([ty,ch])=>{if(no&&ty=='tangga')return;for(let i=0;i<ch.length-1;i++){const a=N[ch[i]],b=N[ch[i+1]];ad(ch[i],ch[i+1],Math.hypot(a[1]-b[1],a[2]-b[2]),ty)}});
+const L=D.lifts;for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++)ad(L[i],L[j],18,'lift');
+if(!no)D.esc.forEach(([a,b])=>ad(a,b,14,'esc'));return G}
+function dij(G,s){const d={[s]:0},pr={},dn={},Q=[s];while(Q.length){let b=0;for(let i=1;i<Q.length;i++)if(d[Q[i]]<d[Q[b]])b=i;const u=Q.splice(b,1)[0];if(dn[u])continue;dn[u]=1;for(const[v,c]of G[u]||[])if(!dn[v]&&(d[v]==null||d[u]+c<d[v])){d[v]=d[u]+c;pr[v]=u;Q.push(v)}}return{d,pr}}
+const pth=(r,x)=>{const p=[x];while(r.pr[p[0]]!=null)p.unshift(r.pr[p[0]]);return p};
+function mk(P,G,h0,rm){const st=[];let h=h0,cur;
+for(let i=0;i<P.length-1;i++){const A=N[P[i]],B=N[P[i+1]],ty=G[P[i]].find(e=>e[0]==P[i+1])[2];
+if(ty=='lift'||ty=='esc'){cur=0;st.push({k:ty,fl:A[0],to:B[0],pts:[[A[1],A[2]]]});h=B[4]||h;continue}
+const d=[B[1]-A[1],B[2]-A[2]],g=Math.atan2(h[0]*d[1]-h[1]*d[0],h[0]*d[0]+h[1]*d[1])*57.3;
+if(!cur||Math.abs(g)>=45){cur={k:'w',fl:A[0],tn:Math.abs(g)>=150?'back':Math.abs(g)>=45?(g>0?'right':'left'):0,at:P[i],f:!i,h0:h,ar:i>0&&G[P[i-1]].find(e=>e[0]==P[i])[2]!='k'&&G[P[i-1]].find(e=>e[0]==P[i])[2]!='tangga',pts:[[A[1],A[2]]],dir:d};st.push(cur)}
+cur.pts.push([B[1],B[2]]);cur.end=P[i+1];h=d}
+let sd='';if(rm.r){const o=N[P[P.length-1]],v=[rm.r[0]+rm.r[2]/2-o[1],rm.r[1]+rm.r[3]/2-o[2]],g=Math.atan2(h[0]*v[1]-h[1]*v[0],h[0]*v[0]+h[1]*v[1])*57.3;sd=Math.abs(g)<45?'ahead':g>0?'sr':'sl'}
+return{st,sd}}
+function plan(){const c=S.cur,r=S.dest,G0=graph(S.ne),G1=graph(1),a=dij(G0,c.n),b=dij(G1,c.n),pe=a.d[r.d]!=null&&pth(a,r.d),pl=b.d[r.d]!=null&&pth(b,r.d);let P=pe,G=G0,o=0;
+if(r.f=='t'){P=pl;G=G1}else if(!S.ne&&pe&&pl&&pe.some((x,i)=>i&&G0[pe[i-1]].find(e=>e[0]==x)[2]=='esc')){o=1;if(S.opt=='lift'){P=pl;G=G1}}
+RT=P?{...mk(P,G,c.h,r),opts:o}:null}
+function stx(s){if(s.k=='w'){const last=s===RT.st[RT.st.length-1],pe=last?t('door')+' '+E(S.dest.n):pk(s.end),pa=pk(s.at);
+const tt=!s.tn?'':s.tn=='back'?t('uturn')+'. ':s.ar?t('exit')+', '+t('turn').toLowerCase()+' '+t(s.tn)+'. ':t('turn')+' '+t(s.tn)+(!s.f&&pa?' '+t('at')+' '+pa:'')+'. ',mt=!pe?' ±'+Math.max(1,Math.round(plen(s.pts)*D.floors[s.fl].m))+' m':'';
+return tt+t('str')+(pe?' '+t('until')+' '+pe:mt)+'.'+(last&&RT.sd?' '+E(S.dest.n)+' '+t(RT.sd)+'.':'')}
+return t((s.k=='lift'?'lift':'esc')+(O[s.to]>O[s.fl]?'U':'D'))+' '+FN(s.to)+'.'}
+// ---- pencarian
+function find(q){const n=norm(q),{d}=dij(graph(S.ne),S.cur.n),L=[];
+RM.forEach(r=>{if(!r.d||d[r.d]==null)return;let s=9;if(!n){if(q.trim()&&r.k.includes('kelas'))s=2}else r.k.forEach(k=>{s=Math.min(s,k==n?0:k.startsWith(n)?1:k.includes(n)?2:9)});if(s<9)L.push([s,d[r.d],r])});
+return L.sort((a,b)=>a[0]-b[0]||a[1]-b[1])}
+const bg=s=>{const o=new Set();for(let i=0;i<s.length-1;i++)o.add(s.slice(i,i+2));return o};
+const btn=(r,act)=>`<button role="option" data-a="${act}" data-v="${r.id}"><b>${E(r.n)}</b><small>${FN(r.f)}${r.ket?' · '+E(r.ket):''}</small></button>`;
+const lst=(L,act)=>`<div class="ls" role="listbox">${L.map(([s,d,r],i)=>btn(r,act).replace('</button>',i==0&&L.length>1&&L[1][0]==s?`<em>${t('near')}</em></button>`:'</button>')).join('')}</div>`;
+function nf(q,act){const B=bg(norm(q)||q.toLowerCase()),c=RM.filter(r=>r.d).map(r=>[[...bg(r.k[0])].filter(x=>B.has(x)).length,r]).filter(x=>x[0]).sort((x,y)=>y[0]-x[0]).slice(0,3);return`<div class="ls"><p>${c.length?t('nf'):t('nf0')}</p>${c.map(x=>btn(x[1],act)).join('')}</div>`}
+function sgs(i,s,act,all){const q=$(i).value,L=find(q);$(s).innerHTML=!q.trim()?'':L.length?lst(all?L:L.slice(0,6),act):nf(q,act)}
+// ---- tampilan
+function render(){document.querySelectorAll('[data-lg]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lg==S.lang));
+$('fl').textContent=S.scr=='route'&&RT?FN(fl()):'';({home,route:rt})[S.scr]()}
+function home(){m.innerHTML=`<div class="home"><h1>Cari Ruang</h1><p style="margin:0">${t('sub')}</p><p class="mn">${t('here')}</p>
+<select id="st" aria-label="${t('here')}">${Object.entries(D.start).map(([k,v])=>`<option value="${k}"${k==S.start?' selected':''}>${E(v.n)}</option>`).join('')}</select>
+<p class="mn" style="margin:0">${t('hint')}</p><p class="mn" style="margin-top:6px">${t('who')}</p><div class="roles">${['mhs','dsn','tmu'].map(r=>`<button data-a="role" data-v="${r}"${S.role==r?' class="on"':''}>${t(r)}</button>`).join('')}</div>
+<div class="sb"><input id="q" placeholder="${t('room')}" autocomplete="off" aria-label="${t('room')}"><button class="y" data-a="go">${t('go')}</button></div><div id="sg"></div>
+<p class="mn" style="margin-top:6px">${t('quick')}</p><div class="chips">${CH[S.role].map(c=>`<button data-a="chip" data-v="${c[0]}">${c[S.lang=='en'?2:1]||c[0]}</button>`).join('')}</div>
+</div>`;$('q').focus()}
+function sheet(){const n=RT.st.length,i=S.i,s=RT.st[i-1],d=S.dest;let b,say;
+if(i>n){say=`${t('arr')} ${E(d.n)}`;b=`<div class="hd">${ic('ok')}<h2>${say}</h2></div><button class="y w" data-a="again">${t('again')}</button>`}
+else if(i==0){say=S.cur.note?`${t('facew')} ${E(S.cur.label)}. ${t('fixh')}`:t('face');b=`<div class="hd">${ic('pin')}<div><h2>${say}</h2><p class="mn">${t('here')}: ${E(S.cur.label)}</p></div></div><p class="mn" style="margin:0 0 10px">${t('livehint')}</p><button class="y w" data-a="live">${t('livebtn')}</button><button class="w" data-a="nx" style="margin-top:8px">${t('start')}</button>`}
+else{say=stx(s);b=`<p class="mn">${i}/${n} · ${t('to')} ${E(d.n)}${LV.on?'':` · ±${Math.round(remM())} m`}</p><p class="mn" id="lvs">${LV.on?lvTxt(s):''}</p>${i==1&&S.cur.note?`<p style="margin:0">${t('facew')} ${E(S.cur.label)}. ${t('fixh')}</p>`:''}<div class="hd">${ic(s.k=='w'?s.tn||'up':s.k)}<h2>${say}</h2></div><div class="nv"><button data-a="pv">${t('prev')}</button><button class="y" data-a="nx">${t('next')}</button></div>`}
+b+=(RT.opts?`<div class="tg">${[['esc','viaE'],['lift','viaL']].map(([v,k])=>`<button data-a="opt" data-v="${v}" aria-pressed="${(S.opt=='lift')==(v=='lift')}">${t(k)}</button>`).join('')}</div>`:'')
++`<div class="tg"><button data-a="ne" aria-pressed="${!!S.ne}">${t('noesc')}</button><button data-a="rot" aria-pressed="${!!S.rot}">${t('rot')}</button><button data-a="wrong">${t('wrong')}</button><button data-a="live" aria-pressed="${!!LV.on}">${t('live2')}</button>${LV.on?`<button data-a="cal">${t('cal')}</button><button data-a="vo" aria-pressed="${!!S.vo}">${t('vo')}</button>${S.nosens?`<button data-a="tst">${t('tst')}</button>`:''}`:''}</div>`
++`<details><summary>${t('all')}</summary><ol>${RT.st.map((x,k)=>`<li><button data-a="g" data-v="${k+1}"${k+1==i?' aria-current="step"':''}>${stx(x)}</button></li>`).join('')}</ol></details>`;
+S.say=say;return b}
+function rt(){if(!RT){m.innerHTML=`<div class="sh" style="margin-top:auto"><p>${t('none')}</p><button class="y w" data-a="again">${t('again')}</button></div>`;return}
+const f=fl(),sh=sheet();
+m.innerHTML=`<div class="rs"><div class="sb"><input id="q3" placeholder="${t('again2')}" autocomplete="off" aria-label="${t('again2')}"><button class="y" data-a="go3">${t('go')}</button></div><div id="sg3"></div></div><div class="mw"><svg id="sv" role="img" aria-label="${t('map')} ${FN(f)}"></svg><div class="zb"><button data-a="zi" aria-label="Zoom +">+</button><button data-a="zo" aria-label="Zoom −">−</button><button data-a="ct" aria-label="Center">◎</button></div></div><div class="sh">${sh}</div>`
++(S.wrong?`<div class="md"><div class="mc"><h2>${t('wrong')}</h2><p style="margin:0">${t('wrongq')}</p><input id="q2" placeholder="${t('fix')}" autocomplete="off" aria-label="${t('fix')}"><div id="sg2"></div><button data-a="cl">${t('close')}</button></div></div>`:'');
+draw(f);bind();vb();$('live').textContent=S.say;if(S.vo&&LV.on&&window.speechSynthesis&&LV.sp!=S.say){LV.sp=S.say;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(S.say);u.lang=S.lang=='en'?'en-US':'id-ID';speechSynthesis.speak(u)}if(LV.on)lvView();$('fl').textContent=FN(f);if(S.wrong)$('q2').focus()}
+function lab(tx,x,y,w,hh,fs,col,mono,vert){let rot=0,ln=[tx];
+if(mono)rot=vert?-90:0;else if(tx.length*fs*.6>w-6){if(hh>w&&tx.length*fs*.6<hh-6)rot=90;else if(tx.includes(' ')){const p=tx.split(' '),k=Math.ceil(p.length/2);ln=[p.slice(0,k).join(' '),p.slice(k).join(' ')]}}
+return`<g class="lb" data-x="${x}" data-y="${y}"><g transform="rotate(${rot})">${ln.map((l,i)=>`<text${mono?' class="mn" letter-spacing="2"':''} y="${(i-(ln.length-1)/2)*fs*1.2}" font-size="${fs}" fill="${col}">${l}</text>`).join('')}</g></g>`}
+function draw(f){const v=$('sv'),F=D.floors[f],[bx,by,bw,bh]=F.b,fs=F.fs,i=S.i,st=RT.st,s=st[i-1],dr=i==0?S.cur.h:s&&(s.tn&&s.h0?s.h0:s.dir),dd=S.dest;
+ROT=S.rot&&dr?(LV.on&&LV.sm!=null&&s&&s.k=='w'?-lh():-90-Math.atan2(dr[1],dr[0])*57.3):0;
+let h=`<g id="w" transform="rotate(${ROT} ${V.cx} ${V.cy})"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="16" fill="#F5F3EE"/>`;
+RM.forEach(r=>{if(r.f!=f||!r.r)return;const tg=r.id==dd.id,[bgc,fg]=tg?['#FFD300','#0E1A2B']:C[r.tp],[x,y,w,hh]=r.r;
+h+=`<g class="${tg?'t':''}" opacity="${tg?1:.35}"><rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="6" fill="${bgc}"${r.tp=='u'?' stroke="#8B8E92" stroke-dasharray="4 4"':tg?' stroke="#0E1A2B" stroke-width="2"':''}/>${r.tp=='a'&&/^Lift/.test(r.n)?`<path d="M${x} ${y}L${x+w} ${y+hh}M${x+w} ${y}L${x} ${y+hh}" stroke="#fff" stroke-opacity=".22" fill="none"/>`:''}${lab(E(r.n),x+w/2,y+hh/2,w,hh,fs,fg)}</g>`});
+if(dd.f==f&&!dd.r){const o=N[dd.d];h+=`<circle class="t" cx="${o[1]}" cy="${o[2]}" r="16" fill="#FFD300" stroke="#0E1A2B" stroke-width="2"/>`}
+(F.lbl||[]).forEach(([tx,x,y,vt])=>h+=lab(E(tx),x,y,0,0,9,'#55595E',1,vt));
+const ws=st.filter(x=>x.k=='w'&&x.fl==f),pl=x=>x.pts.map(a=>a.join(',')).join(' '),pf=' fill="none" stroke-linecap="round" stroke-linejoin="round"';
+h+=ws.map(x=>(x===s?`<polyline points="${pl(x)}"${pf} stroke="#FFD300" stroke-opacity=".5" stroke-width="18"/>`:'')+`<polyline points="${pl(x)}"${pf} stroke="#0E1A2B" stroke-width="8"/>`).join('')+ws.map(x=>`<polyline class="rd" points="${pl(x)}"${pf} stroke="#FFD300" stroke-width="4"/>`).join('');
+if(LV.on&&s&&s.k=='w'){const p=pat(s.pts,LV.d);h+=`<g id="lv" transform="translate(${p[0]} ${p[1]})"><path id="lvc" d="M0 0L-16-40A43 43 0 0 1 16-40Z" fill="#FFD300" fill-opacity=".5" transform="rotate(${LV.sm==null?p[2]:lh()})"/><circle r="9" fill="#0E1A2B" stroke="#FFD300" stroke-width="3"/></g>`}else if(i<=st.length){const mp=i==0?N[S.cur.n].slice(1,3):s.pts[0];h+=`<g transform="translate(${mp[0]} ${mp[1]})"><circle class="pr" r="12" fill="#FFD300"/><circle r="9" fill="#0E1A2B" stroke="#FFD300" stroke-width="3"/>${dr?`<path d="M0-22L8-9H-8Z" fill="#0E1A2B" stroke="#FFD300" stroke-width="1.5" transform="rotate(${Math.atan2(dr[0],-dr[1])*57.3})"/>`:''}</g>`}
+v.innerHTML=h+'</g>';v.querySelectorAll('.lb').forEach(g=>g.setAttribute('transform',`translate(${g.dataset.x} ${g.dataset.y}) rotate(${-ROT})`))}
+// ---- mode langsung: kompas + hitung langkah, posisi dikunci ke jalur rute
+const dl=a=>((a%360)+540)%360-180,pang=h=>Math.atan2(h[0],-h[1])*57.3,lh=()=>LV.sm+LV.off;
+const plen=p=>{let L=0;for(let i=1;i<p.length;i++)L+=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);return L};
+function pat(p,d){for(let i=1;i<p.length;i++){const a=p[i-1],b=p[i],l=Math.hypot(b[0]-a[0],b[1]-a[1]);if(d<=l||i==p.length-1){const k=l?Math.min(1,d/l):0;return[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,pang([b[0]-a[0],b[1]-a[1]])]}d-=l}return[p[0][0],p[0][1],0]}
+const expA=()=>{const s=RT&&RT.st[S.i-1];return S.i==0?pang(S.cur.h):s&&s.k=='w'?pat(s.pts,LV.d)[2]:null};
+const calib=e=>{if(e!=null&&LV.sm!=null)LV.off=e-LV.sm};
+const ch=(a,b,g)=>{if(Math.abs(b)<35)return(360-a)%360;const r=Math.PI/180,x=b*r,y=g*r,z=a*r,cY=Math.cos(y),cZ=Math.cos(z),sX=Math.sin(x),sY=Math.sin(y),sZ=Math.sin(z),h=Math.atan2(-cZ*sY-sZ*sX*cY,-sZ*sY+cZ*sX*cY)*57.3;return h<0?h+360:h};
+function remM(){let r=0;RT.st.forEach((s,k)=>{if(k<S.i-1)return;r+=s.k!='w'?15:(plen(s.pts)-(k==S.i-1&&LV.on?LV.d:0))*D.floors[s.fl].m});return Math.max(0,r)}
+function lvTxt(s){let x=t('live')+' · '+t('rem')+' ±'+Math.round(remM())+' m';if(!s)return x;if(s.k!='w')return x+' · '+t('tap');
+if(LV.sm!=null){const d=dl(pat(s.pts,LV.d)[2]-lh());if(LV.warn||Math.abs(d)>35)x+=' · '+(Math.abs(d)>135?t('back'):d>0?t('tr'):t('tl'))}else if(S.nosens)x+=' · '+t('nosens');return x}
+function lvView(){const s=RT&&RT.st[S.i-1],v=$('sv'),g=$('lv');if(!LV.on||!v||!g||!s||s.k!='w')return;
+const p=pat(s.pts,LV.d),h=LV.sm==null?p[2]:lh();V.cx=p[0];V.cy=p[1];const r=S.rot?-h:0;
+$('w').setAttribute('transform',`rotate(${r} ${p[0]} ${p[1]})`);g.setAttribute('transform',`translate(${p[0]} ${p[1]})`);$('lvc').setAttribute('transform',`rotate(${h})`);
+if(Math.abs(r-ROT)>1){ROT=r;v.querySelectorAll('.lb').forEach(b=>b.setAttribute('transform',`translate(${b.dataset.x} ${b.dataset.y}) rotate(${-ROT})`))}
+vb();const e=$('lvs');if(e)e.textContent=lvTxt(s)}
+function stepIn(){const s=RT&&RT.st[S.i-1];if(!LV.on||!s||s.k!='w')return;
+if(LV.sm!=null&&Math.abs(dl(pat(s.pts,LV.d)[2]-lh()))>80){LV.warn=1;lvView();return}
+LV.warn=0;LV.d+=.7/D.floors[s.fl].m;const L=plen(s.pts);
+if(LV.d>=L-8){navigator.vibrate&&navigator.vibrate(120);const c=LV.d-L;S.i++;LV.d=0;const nx=RT.st[S.i-1];if(nx&&nx.k=='w')LV.d=Math.max(0,c);render()}else lvView()}
+function oh(e){if(!LV.on)return;let h=e.webkitCompassHeading;if(h==null){if(e.type=='deviceorientation'&&LV.abs||e.alpha==null)return;h=ch(e.alpha,e.beta||0,e.gamma||0)}
+if(e.type=='deviceorientationabsolute')LV.abs=1;SE.o=1;LV.sm=LV.sm==null?h:LV.sm+.3*dl(h-LV.sm);
+if(LV.pc!=null){calib(LV.pc);LV.pc=null}
+if(Date.now()-LV.vt>120){LV.vt=Date.now();lvView()}}
+function mh(e){if(!LV.on)return;const a=e.accelerationIncludingGravity;if(!a)return;SE.m=1;const g=Math.hypot(a.x||0,a.y||0,a.z||0),n=Date.now();LV.f=LV.f==null?g:LV.f*.65+g*.35;
+if(LV.f>10.9&&!LV.up&&n-LV.t>350){LV.up=1;LV.t=n;stepIn()}else if(LV.f<10)LV.up=0}
+async function lvOn(){try{if(window.DeviceMotionEvent&&DeviceMotionEvent.requestPermission)await DeviceMotionEvent.requestPermission()}catch(e){}
+if(!LV.ls){LV.ls=1;addEventListener('deviceorientationabsolute',oh,true);addEventListener('deviceorientation',oh,true);addEventListener('devicemotion',mh,true)}
+LV={...LV,on:1,pc:expA(),d:0,sm:null,warn:0,f:null};SE={o:0,m:0};S.nosens=0;
+setTimeout(()=>{if(LV.on&&!SE.m){S.nosens=1;render()}},2500)}
+// ---- zoom, geser, fokus
+function vb(){const v=$('sv');if(!v)return;const b=D.floors[fl()].b,W=v.clientWidth||360,H=v.clientHeight||360,k=Math.max(b[2]/W,b[3]/H)/V.z;V.k=k;v.setAttribute('viewBox',`${V.cx-W*k/2} ${V.cy-H*k/2} ${W*k} ${H*k}`)}
+function focus(){if(!RT)return;const i=S.i,s=RT.st[i-1],p=i&&s?s.pts:[(i?N[S.dest.d]:N[S.cur.n]).slice(1,3)],xs=p.map(a=>a[0]),ys=p.map(a=>a[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+V={cx:(x0+x1)/2,cy:(y0+y1)/2,z:Math.min(2.2,Math.max(1,D.floors[fl()].b[2]/(Math.max(x1-x0,y1-y0)+160))),k:1}}
+function bind(){const v=$('sv'),P=new Map();let ld=0;
+v.onpointerdown=e=>{v.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);ld=0};
+v.onpointermove=e=>{const o=P.get(e.pointerId);if(!o)return;P.set(e.pointerId,[e.clientX,e.clientY]);
+if(P.size==1){const r=ROT*Math.PI/180,dx=e.clientX-o[0],dy=e.clientY-o[1];V.cx-=(dx*Math.cos(r)+dy*Math.sin(r))*V.k;V.cy-=(-dx*Math.sin(r)+dy*Math.cos(r))*V.k;vb()}
+else if(P.size==2){const[a,b]=[...P.values()],d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(ld)A.zm(d/ld);ld=d}};
+v.onpointerup=v.onpointercancel=e=>{P.delete(e.pointerId);ld=0};v.onwheel=e=>{e.preventDefault();A.zm(e.deltaY<0?1.15:.87)}}
+// ---- aksi
+const place=r=>{const o=N[r.d];S.cur={n:r.d,h:r.r?[r.r[0]+r.r[2]/2-o[1],r.r[1]+r.r[3]/2-o[2]]:[0,-1],label:r.n,note:1}};
+function gof(i,s){const q=$(i).value;if(!q.trim()){$(s).innerHTML=`<div class="ls"><p>${t('empty')}</p></div>`;return}const L=find(q);if(L.length==1||(L.length>1&&!L[0][0]&&L[1][0]))return A.pick(L[0][2].id);sgs(i,s,'pick',1)}
+const mv=i=>{LV.d=0;S.i=Math.max(0,i);focus();render()},re=()=>{LV.d=0;plan();S.i=0;focus();render()};
+const A={role:v=>{S.role=v;render()},lang:v=>{S.lang=v;document.documentElement.lang=v;render()},
+go(){gof('q','sg')},go3(){gof('q3','sg3')},
+chip(v){$('q').value=v;A.go()},
+pick(id){const ar=S.scr=='route'&&RT&&S.i>RT.st.length;if(ar)place(S.dest);S.dest=RM.find(r=>r.id==id);S.opt='auto';S.scr='route';LV.d=0;plan();S.i=ar?1:0;focus();render()},
+nx:()=>mv(S.i+1),pv:()=>mv(S.i-1),g:v=>mv(+v),opt(v){S.opt=v;re()},ne(){S.ne^=1;re()},rot(){S.rot^=1;render()},
+wrong(){S.wrong=1;render()},cl(){S.wrong=0;render()},
+fix(id){place(RM.find(x=>x.id==id));S.wrong=0;LV.d=0;if(LV.on)LV.pc=pang(S.cur.h);plan();S.i=1;focus();render()},
+home(){LV.on=0;S.nosens=0;setStart(S.start);S.scr='home';S.wrong=0;render()},again(){const q=$('q3');q?q.focus():A.home()},
+async live(){if(LV.on){LV.on=0;S.nosens=0;render();return}await lvOn();if(S.i==0)S.i=1;render()},cal(){calib(expA())},vo(){S.vo^=1;render()},tst(){stepIn()},zm(f){V.z=Math.min(5,Math.max(.8,V.z*f));vb()},zi:()=>A.zm(1.3),zo:()=>A.zm(.77),ct(){focus();vb()}};
+document.onclick=e=>{const b=e.target.closest('[data-a]');if(b)A[b.dataset.a](b.dataset.v)};
+document.oninput=e=>{if(e.target.id=='q')sgs('q','sg','pick');if(e.target.id=='q2')sgs('q2','sg2','fix');if(e.target.id=='q3')sgs('q3','sg3','pick')};
+document.onchange=e=>{if(e.target.id=='st'){setStart(e.target.value);if($('q').value)sgs('q','sg','pick')}};
+document.onkeydown=e=>{if(e.key!='Enter')return;if(e.target.id=='q')A.go();if(e.target.id=='q3')A.go3();if(e.target.id=='q2'){const L=find(e.target.value);if(L.length)A.fix(L[0][2].id)}};
+window.onresize=vb;
+setStart('ground-masuk');const U=new URLSearchParams(location.search);if(D.start[U.get('dari')])setStart(U.get('dari'));
+render();if(U.get('ruang')&&S.scr=='home'){$('q').value=U.get('ruang');A.go()}
+</script></body></html>

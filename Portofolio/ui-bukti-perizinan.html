@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Bukti Perizinan – Track</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F1B33; --muted:#4A5671; --line:#D9DFEA; --field:#B7C0D1;
+  --bg:#F4F6FA; --surface:#FFFFFF;
+  --primary:#1747C9; --primary-soft:#E6EDFD;
+  --ok:#0B6B45; --ok-soft:#E3F5EC; --ok-solid:#0E7A4F;
+  --bad:#B3261E; --bad-soft:#FCE8E6;
+  --warn:#8A5200; --warn-soft:#FFF1D9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#E9EDF5;color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+.page-head{padding:32px 24px 8px;max-width:1100px}
+.page-head h1{margin:0 0 6px;font-size:28px;line-height:1.2}
+.page-head p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.row{display:flex;gap:32px;padding:24px;overflow-x:auto;align-items:flex-start}
+.screen{flex:none;width:390px}
+.cap{margin:0 0 10px;font-size:14px;font-weight:700}
+.cap span{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-top:2px}
+.phone{width:390px;height:844px;border-radius:28px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;border:1px solid #C5CDDC;box-shadow:0 12px 32px rgba(15,27,51,.14)}
+.top{height:64px;flex:none;padding:0 12px;display:flex;align-items:center;gap:8px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h2{margin:0;font-size:18px;font-weight:700}
+.icon-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;color:inherit;text-decoration:none}
+svg{flex:none}
+.steps{padding:16px 16px 0;display:flex;flex-direction:column;gap:8px}
+.steps small{font-size:12px;font-weight:600;color:var(--muted)}
+.bars{display:flex;gap:6px}
+.bars i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.bars i.on{background:var(--primary)}
+.body{flex:1;min-height:0;padding:20px 16px;display:flex;flex-direction:column;gap:16px}
+.foot{flex:none;padding:16px;background:var(--surface);border-top:1px solid var(--line);display:flex;gap:12px}
+.btn{flex:1;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;font:700 16px/1 inherit;font-family:inherit;text-decoration:none;border:2px solid transparent;cursor:pointer}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.ghost{background:var(--surface);color:var(--primary);border-color:var(--primary)}
+.btn.ok{background:var(--ok-solid);color:#fff}
+.btn.no{background:var(--surface);color:var(--bad);border-color:var(--bad)}
+.btn.sm{height:44px;font-size:14px;border-radius:12px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend,.lbl{padding:0;margin-bottom:6px;display:block;font-size:13px;font-weight:600}
+.choices{display:flex;gap:12px}
+.choice{flex:1;min-height:56px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;background:var(--surface);font-size:15px;font-weight:700}
+.choice.on{border-color:var(--primary);background:var(--primary-soft)}
+.choice input{width:18px;height:18px;margin:0;accent-color:var(--primary)}
+.field{display:flex;flex-direction:column}
+input[type=text],select,textarea{width:100%;height:48px;padding:0 12px;border:1px solid var(--field);border-radius:12px;background:var(--surface);font:15px/1.4 inherit;font-family:inherit;color:var(--ink)}
+textarea{height:96px;padding:12px;resize:none}
+.two{display:flex;gap:12px}.two .field{flex:1;min-width:0}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;background:var(--primary-soft);font-size:13px;line-height:1.45}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.badge{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:13px;font-size:12px;font-weight:700}
+.badge.wait{background:var(--warn-soft);color:var(--warn)}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.bad{background:var(--bad-soft);color:var(--bad)}
+.badge.type{background:var(--primary-soft);color:var(--primary)}
+.kv{display:grid;grid-template-columns:104px 1fr;gap:8px 8px;font-size:13px;line-height:1.4;margin:0}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:600}
+.proof{height:196px;border-radius:12px;border:1px dashed var(--field);background:repeating-linear-gradient(135deg,#EEF1F7 0 10px,#F7F8FC 10px 20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:13px;font-weight:600}
+/* kamera */
+.cam{background:#0B1220;color:#fff}
+.cam .top{background:transparent;border:0;color:#fff}
+.finder{flex:1;margin:4px 16px 0;border-radius:20px;background:#1B2438;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 48px;color:#C9D2E3;font-size:14px;line-height:1.5}
+.finder b{position:absolute;width:28px;height:28px;border:3px solid #fff}
+.finder b:nth-of-type(1){top:20px;left:20px;border-right:0;border-bottom:0;border-top-left-radius:10px}
+.finder b:nth-of-type(2){top:20px;right:20px;border-left:0;border-bottom:0;border-top-right-radius:10px}
+.finder b:nth-of-type(3){bottom:20px;left:20px;border-right:0;border-top:0;border-bottom-left-radius:10px}
+.finder b:nth-of-type(4){bottom:20px;right:20px;border-left:0;border-top:0;border-bottom-right-radius:10px}
+.controls{flex:none;padding:20px 24px 28px;display:flex;flex-direction:column;gap:14px}
+.ctl-row{display:flex;align-items:center;justify-content:space-between}
+.side{width:80px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:12px;font-weight:600}
+.side .sq{width:52px;height:52px;border-radius:14px;background:#26314A;display:flex;align-items:center;justify-content:center}
+.shutter{width:76px;height:76px;border-radius:50%;border:4px solid #fff;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.shutter i{width:58px;height:58px;border-radius:50%;background:#fff}
+.hint{text-align:center;font-size:12px;color:#C9D2E3}
+/* daftar */
+.banner{display:flex;gap:10px;align-items:center;padding:12px;border-radius:12px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:600;line-height:1.4}
+.item{display:flex;flex-direction:column;gap:8px}
+.item .r{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.item h3{margin:0;font-size:15px}
+.item p{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.reason{padding:10px 12px;border-radius:10px;background:var(--bad-soft);font-size:13px;line-height:1.4;color:#7A1914}
+.chips{display:flex;gap:8px}
+.chip{height:36px;padding:0 14px;display:flex;align-items:center;border-radius:18px;border:1px solid var(--field);background:var(--surface);font-size:13px;font-weight:600}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>Bukti Perizinan – desain UI Track</h1>
+  <p>Fitur dari Kelompok 3, dikerjakan Kelompok 5. Mahasiswa mengunggah bukti izin sakit atau acara dengan alur mirip aplikasi kamera, dosen memvalidasi. Geser ke kanan untuk melihat kelima layar.</p>
+</header>
+
+<main class="row">
+
+<!-- 1 -->
+<section class="screen" aria-label="Layar 1: Ajukan izin">
+  <p class="cap">1. Ajukan izin (mahasiswa)<span>FR-01, FR-02</span></p>
+  <div class="phone">
+    <div class="top">
+      <a class="icon-btn" href="#l4" aria-label="Kembali"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+      <h2>Ajukan Izin</h2>
+    </div>
+    <div class="steps"><small>Langkah 1 dari 3 · Data izin</small><div class="bars"><i class="on"></i><i></i><i></i></div></div>
+    <div class="body" style="gap:18px">
+      <fieldset>
+        <legend>Jenis izin</legend>
+        <div class="choices">
+          <label class="choice on"><input type="radio" name="jenis" checked> Sakit</label>
+          <label class="choice"><input type="radio" name="jenis"> Acara</label>
+        </div>
+      </fieldset>
+      <div class="field"><label class="lbl" for="mk">Mata kuliah / pertemuan</label>
+        <select id="mk"><option>Software Development Life Cycle</option></select></div>
+      <div class="two">
+        <div class="field"><label class="lbl" for="mulai">Tanggal mulai</label><input id="mulai" type="text" value="3 Nov 2026"></div>
+        <div class="field"><label class="lbl" for="selesai">Tanggal selesai</label><input id="selesai" type="text" value="4 Nov 2026"></div>
+      </div>
+      <div class="field"><label class="lbl" for="ket">Keterangan singkat</label>
+        <textarea id="ket" style="height:120px">Demam dan dianjurkan istirahat.</textarea></div>
+      <div class="note">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1747C9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span>Bukti berupa foto atau dokumen diunggah di langkah berikutnya. Format JPG, PNG, atau PDF, maksimal 5 MB.</span>
+      </div>
+    </div>
+    <div class="foot"><a class="btn primary" href="#l2">Lanjut: unggah bukti</a></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="screen" id="l2" aria-label="Layar 2: Unggah bukti">
+  <p class="cap">2. Unggah bukti, UI mirip kamera<span>FR-03 · foto, kamera, galeri, dokumen</span></p>
+  <div class="phone cam">
+    <div class="top">
+      <a class="icon-btn" href="#" aria-label="Tutup"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+      <h2>Unggah Bukti</h2>
+    </div>
+    <div class="finder"><b></b><b></b><b></b><b></b>Arahkan kamera ke surat dokter atau bukti kegiatan</div>
+    <div class="controls">
+      <div class="ctl-row">
+        <a class="side" href="#"><span class="sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="M21 16l-5-5-8 8"/></svg></span>Galeri</a>
+        <a class="shutter" href="#l3" aria-label="Ambil foto"><i></i></a>
+        <a class="side" href="#"><span class="sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>Dokumen</a>
+      </div>
+      <div class="hint">JPG, PNG, atau PDF · maksimal 5 MB</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="screen" id="l3" aria-label="Layar 3: Pratinjau dan submit">
+  <p class="cap">3. Pratinjau &amp; submit<span>FR-04, FR-05</span></p>
+  <div class="phone">
+    <div class="top">
+      <a class="icon-btn" href="#l2" aria-label="Kembali"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+      <h2>Pratinjau Bukti</h2>
+    </div>
+    <div class="steps"><small>Langkah 3 dari 3 · Periksa dan kirim</small><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+    <div class="body">
+      <div class="card" style="display:flex;flex-direction:column;gap:12px">
+        <div class="proof">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="M21 16l-5-5-8 8"/></svg>
+          Pratinjau foto bukti
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px">
+          <span><b>bukti-izin-sakit.jpg</b><br><span style="color:var(--muted)">JPG · maksimal 5 MB</span></span>
+          <span style="display:flex;gap:8px">
+            <a class="btn ghost sm" style="flex:none;padding:0 14px" href="#l2">Ganti</a>
+            <a class="btn no sm" style="flex:none;padding:0 14px" href="#l2">Hapus</a>
+          </span>
+        </div>
+      </div>
+      <div class="card">
+        <dl class="kv">
+          <dt>Jenis izin</dt><dd>Sakit</dd>
+          <dt>Mata kuliah</dt><dd>Software Development Life Cycle</dd>
+          <dt>Tanggal</dt><dd>3 – 4 Nov 2026</dd>
+          <dt>Keterangan</dt><dd>Demam dan dianjurkan istirahat.</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="foot"><a class="btn primary" href="#l4">Submit ke dosen</a></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="screen" id="l4" aria-label="Layar 4: Status pengajuan">
+  <p class="cap">4. Status pengajuan (mahasiswa)<span>FR-08, FR-09, FR-10</span></p>
+  <div class="phone">
+    <div class="top"><h2 style="padding-left:8px">Pengajuan Izin</h2></div>
+    <div class="body" style="padding-top:16px">
+      <div class="banner">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>
+        Pengajuan terkirim. Menunggu validasi dosen.
+      </div>
+      <div class="card item">
+        <div class="r"><h3>Izin sakit</h3><span class="badge wait">Menunggu</span></div>
+        <p>Software Development Life Cycle · 3 – 4 Nov 2026</p>
+      </div>
+      <div class="card item">
+        <div class="r"><h3>Izin acara</h3><span class="badge ok">Disetujui</span></div>
+        <p>Software Development Life Cycle · 20 Okt 2026</p>
+      </div>
+      <div class="card item">
+        <div class="r"><h3>Izin sakit</h3><span class="badge bad">Ditolak</span></div>
+        <p>Software Development Life Cycle · 12 Okt 2026</p>
+        <div class="reason"><b>Catatan dosen:</b> bukti kurang jelas, mohon unggah ulang.</div>
+        <a class="btn ghost sm" href="#" style="flex:none">Ajukan ulang</a>
+      </div>
+    </div>
+    <div class="foot"><a class="btn primary" href="#">Ajukan izin baru</a></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="screen" id="l5" aria-label="Layar 5: Validasi izin dosen">
+  <p class="cap">5. Validasi izin (dosen)<span>FR-06, FR-07</span></p>
+  <div class="phone">
+    <div class="top"><h2 style="padding-left:8px">Validasi Izin</h2></div>
+    <div class="body" style="padding-top:16px">
+      <div class="chips"><span class="chip on">Menunggu</span><span class="chip">Disetujui</span><span class="chip">Ditolak</span></div>
+      <div class="card" style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <div><b style="font-size:15px">[Nama Mahasiswa]</b><br><span style="font-size:13px;color:var(--muted)">[NIM]</span></div>
+          <span class="badge type">Sakit</span>
+        </div>
+        <dl class="kv">
+          <dt>Mata kuliah</dt><dd>Software Development Life Cycle</dd>
+          <dt>Tanggal</dt><dd>3 – 4 Nov 2026</dd>
+          <dt>Keterangan</dt><dd>Demam dan dianjurkan istirahat.</dd>
+        </dl>
+        <div class="proof" style="height:132px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="M21 16l-5-5-8 8"/></svg>
+          Bukti: bukti-izin-sakit.jpg
+        </div>
+        <div class="field"><label class="lbl" for="cat">Catatan (wajib saat menolak)</label>
+          <textarea id="cat" style="height:72px" placeholder="Tulis alasan jika menolak"></textarea></div>
+      </div>
+    </div>
+    <div class="foot"><a class="btn no" href="#">Tolak</a><a class="btn ok" href="#l4">Setujui</a></div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
